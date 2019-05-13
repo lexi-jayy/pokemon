@@ -1,0 +1,23 @@
+        <div class="row">
+            <?php if(has_post_thumbnail()): ?>
+                <div class="col-12 col-sm-6">
+                    <?php the_post_thumbnail('medium_large', ['class'=>'img-fluid', 'alt'=>'this is the featured image']); ?>
+                </div>
+                <!-- <div class="col-12 col-sm-6"> -->
+                <?php $columnClasses = 'col-12 col-sm-6' ?>
+            <?php else: ?>
+                <div class="col-12">
+                <?php $columnClasses = 'col-12' ?>
+            <?php endif; ?>
+            <div class="<?php echo $columnClasses; ?>">
+                <div class="content">
+                    <?php the_content(); ?>
+                </div>
+            </div>
+
+
+
+
+
+            <hr>
+        </div>
