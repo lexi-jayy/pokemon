@@ -1,6 +1,6 @@
 <?php if( is_singular() ): ?>
     <div class="col-12">
-    <p> this is a video post </p>
+    <p> this is a Audio post </p>
     </div>
     <div class="col-12">
     <?php the_content(); ?>
