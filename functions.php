@@ -69,3 +69,9 @@ function add_sidebar() {
     }
     
     add_action( 'widgets_init', 'remove_all_widgets' );
+
+
+
+    
+
+    require get_template_directory() . '/inc/custom_post_types.php';
