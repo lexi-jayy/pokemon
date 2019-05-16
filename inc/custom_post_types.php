@@ -26,7 +26,8 @@ function add_event_post_types(){
         'description' => 'a list of events that will be held',
         'public' => true,
         'show_in_nav_menus' => false,
-        'menu_position' => 6,
+		'menu_position' => 6,
+		'show_in_rest' => true,
         'menu_icon' => 'dashicons-tickets',
         'supports' => array( 'title', 'editor','thumbnail', 'page-attributes') 
 
