@@ -1,10 +1,21 @@
 <?php get_header(); ?>
 
+<h3> <?php echo get_theme_mod('sidebar_position'); ?> </h3>
+<?php
+    $side = get_theme_mod('sidebar_position');
 
+    if($side === 'left'){
+        $sidebarOrder = 'order-0';
+        $contentorder = 'order-1';
+    } else {
+        $sidebarOrder = 'order-1';
+        $contentorder = 'order-0';
+    }
+    ?>
 
-<div class="row">  
+<div class="row mb-5 d-flex">  
 <?php if( have_posts() ): ?>
-<div class="col">
+<div class="col <?php echo $contentorder ;?>">
         <div class="card-deck">
         <?php while( have_posts() ): the_post() ?>
 
@@ -15,15 +26,43 @@
     </div>
     <?php endif; ?>
     <?php if( is_active_sidebar('sidebar-1')): ?>
-    <div class="col-3">
+    <div class="col-3 <?php echo $sidebarOrder; ?>">
         <div class="card bg-light p-3">
             <ul>
                 <?php dynamic_sidebar('sidebar-1'); ?>
             </ul>
         </div>
     </div>
+    </div>
 
     <?php endif ?>
-</div>
+
+    <?php
+            $args = array(
+                'post_type' => 'event',
+                'post_per_page' => 2,
+                'orderby' => 'date'
+            );
+            $allEvents = new WP_Query($args);
+         ?>
+         <?php if( $allEvents->have_posts() ): ?>
+             <div class="row mb-5">
+                 <div class="col-12">
+                         <?php while( $allEvents->have_posts() ): $allEvents->the_post(); ?>
+                             <div class="card">
+                               <div class="card-header" id="heading">
+                                 <h2 class="mb-0">
+                                       <?php the_title(); ?>
+                                 </h2>
+                                 <div class="card-body">
+                                     <?php the_content(); ?>
+                                 </div>
+                               </div>
+                             </div>
+
+                         <?php endwhile; ?>
+                     </div>
+                 </div>
+         <?php endif; ?>
 
 <?php get_footer(); ?>  

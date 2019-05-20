@@ -75,3 +75,4 @@ function add_sidebar() {
     
 
     require get_template_directory() . '/inc/custom_post_types.php';
+    require get_template_directory() . '/inc/customizer.php';

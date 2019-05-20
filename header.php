@@ -9,17 +9,7 @@
     
 </head>
 <body  <?php body_class();  ?>>
-    <!-- <p> header.php </p> -->
     <div class="container">
-    <?php 
-// if ( has_nav_menu( 'footer_menu' ) ) {
-//     wp_nav_menu(array(
-//         'theme_location' => 'header_menu',
-//         'menu_class' => 'my_added_class'
-//     ));
-// }
-    
-    ?>
     <nav class="navbar navbar-expand-md navbar-light bg-light" role="navigation">
   <div class="container">
 	<!-- Brand and toggle get grouped for better mobile display -->
