@@ -80,6 +80,73 @@ function mytheme_customize_register( $wp_customize ) {
         )
     );
 
+
+
+    $wp_customize->add_section( 'front_page_section' , array(
+        'title'      => __( 'Featured Posts', '18wdwu07Pokemon' ),
+        'priority'   => 30,
+    ) );
+
+    $wp_customize->add_setting( 'featured_post_setting' , array(
+        'default'   => '',
+        'transport' => 'refresh',
+    ) );
+
+        $args = array(
+            'post_per_page' => -1
+        );
+        $allPosts = get_posts($args);
+
+        $options = array();
+        $options[''] = 'please select a featured post';
+        foreach ($allPosts as $singlePost) {
+            $options[$singlePost->ID] = $singlePost->post_title;
+        }
+
+
+    $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'featured_post_control', array(
+        'label'      => __( 'Featured Post', '18wdwu07Pokemon' ),
+        'section'    => 'front_page_section',
+        'settings'   => 'featured_post_setting',
+        'type'       => 'select',
+        'choices' => $options,
+    ) ) );
+
+
+
+
+
+
+    $wp_customize->add_section( 'staff_page_section' , array(
+        'title'      => __( 'Employee Of The Month', '18wdwu07Pokemon' ),
+        'priority'   => 30,
+    ) );
+
+    $wp_customize->add_setting( 'EOTM_page_setting' , array(
+        'default'   => '',
+        'transport' => 'refresh',
+    ) );
+
+        // $args = array(
+        //     'post_per_page' => -1
+        // );
+        // $allPosts = get_posts($args);
+
+        // $options = array();
+        // $options[''] = 'please select an Employee';
+        // foreach ($allPosts as $singlePost) {
+        //     $options[$singlePost->ID] = $singlePost->post_title;
+        // }
+
+
+    $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'featured_post_control', array(
+        'label'      => __( 'Employee of the month', '18wdwu07Pokemon' ),
+        'section'    => 'staff_page_section',
+        'settings'   => 'EOTM_page_setting',
+        // 'type'       => 'select',
+        // 'choices' => $options,
+    ) ) );
+
 }
  add_action( 'customize_register', 'mytheme_customize_register' );
 
