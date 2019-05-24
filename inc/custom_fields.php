@@ -3,7 +3,7 @@
 $metaboxes = array(
     'post_meta' => array(
         'title' => 'Extra Post Information',
-        'post_type' => 'post',
+        'post_type' => 'event',
         'fields' => array(
             'location' => array(
                 'title' => 'Post Location',
@@ -31,27 +31,43 @@ $metaboxes = array(
     ),
     'page_meta' => array(
         'title' => 'Extra Page Information',
-        'post_type' => 'page',
+        'post_type' => 'page'
+    ),
+    'events_meta' => array(
+        'title' => 'Extra Event Information',
+        'post_type' => 'event'
+    ),
+    'staff_meta' => array(
+        'title' => 'Extra Staff Information',
+        'post_type' => 'staff',
         'fields' => array(
-            'width' => array(
-                'title' => 'width',
-                'type' => 'select',
-                'description' => 'What is the width that you would like?',
-                'choices' => array('Full Width', 'Half Width')
+            'location' => array(
+                'title' => 'Role',
+                'type' => 'text',
+                'description' => 'Where is your role?'
             ),
-        ),
-        'events_meta' => array(
-            'title' => 'Extra Event Information',
-            'post_type' => 'event',
-            'fields' => array(
-                'Event' => array(
-                    'title' => 'Events',
-                    'type' => 'select',
-                    'description' => 'Choose An Event?',
-                    'choices' => array('Event 1', 'Wvent 2')
-                ),
-        ),
-    )
+        )
+    ),
+    'post_formats_meta' => array(
+        'title' => 'Post Formats Feilds',
+        'post_type' => 'post',
+        'fields' => array(
+            'video_link' => array(
+                'title' => 'Video Link',
+                'type' => 'text',
+                'condition' => 'video'
+            ),
+            'audio_link' => array(
+                'title' => 'Audio Link',
+                'type' => 'text',
+                'condition' => 'audio'
+            ),
+            'image_url' => array(
+                'title' => 'Image URL',
+                'type' => 'text',
+                'condition' => 'image'
+            )
+        )
     )
 );
 
@@ -81,10 +97,20 @@ function output_custom_meta_box($post, $metabox){
 
     if($fields){
         foreach ($fields as $fieldID => $field) {
+            if($customValues[$fieldID][0]){
+                $value = $customValues[$fieldID][0];
+            }
+            if(isset($field['condition'])){
+                $condition = 'class="conditionalField" data-condition="'.$field['condition'].'"';
+            } else {
+                $condition = '';
+            }
             switch($field['type']){
                 case 'text':
+                    echo '<div id="' . $fieldID .'"'.$condition.' >';
                     echo '<label for="'.$fieldID.'">'.$field['title'].'</label>';
-                    echo '<input type="text" name="'.$fieldID.'" class="inputField" value="'.$customValues[$fieldID][0].'">';
+                    echo '<input type="text" name="'.$fieldID.'" class="inputField" value="'.isset($value).'">';
+                    echo '</div>';
                 break;
                 case 'number':
                     echo '<label for="'.$fieldID.'">'.$field['title'].'</label>';

@@ -21,6 +21,17 @@ add_action('wp_enqueue_scripts', 'add_custom_files');
 
 function add_admin_styles(){
   wp_enqueue_style('my_admin_styles', get_template_directory_uri() . '/assets/css/admin.css' , array(), '0.1');
+  
+  $screen = get_current_screen();
+
+  if($screen->post_type === 'post' && ($screen->action === 'add' || $_GET['action'] === 'edit') ){
+     wp_enqueue_script('change_post_formats_script', get_template_directory_uri() . '/assets/js/change_post_formats.js', array('jquery'), '0.1', true);
+     $format = get_post_format($_GET['post']);
+  
+     wp_localize_script('change_post_formats_script', 'formatObject', array(
+       'format' => $format,
+     ));
+ }
 }
 add_action('admin_enqueue_scripts', 'add_admin_styles');
 
