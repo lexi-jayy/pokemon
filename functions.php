@@ -7,7 +7,29 @@ function add_custom_files(){
 
     wp_enqueue_style('my_custom_stylesheet', get_template_directory_uri() . '/assets/css/custom_theme_style.css',  array(), '0.1');
 
+    wp_enque_script('jquery');
+
     wp_enqueue_script( 'my_bootstrap_script', get_template_directory_uri() . '/assets/js/bootstrap.js', array (), '4.3.1', true);
+
+    wp_enqueue_script('show_more_posts', get_template_directory_uri() . '/assets/js/showMore.js', array('jquery'), '0.1', true);
+
+
+
+    global $wp_query;
+
+    $currentPage = get_query_var('paged');
+    var_dump($currentPage);
+    if($currentPage == 0){
+      $currentPage = 1;
+    };
+
+    wp_localize_script('show_more_posts', 'load_more', array(
+        'ajax_url' => site_url() . './wp-admin/admin-ajax.php',
+        'query' => json_encode($wp_query->query_vars),
+        'max_page' => $wp_query->max_num_pages,
+        'current_page' => $currentPage
+    ));
+
 
 };
 add_action('wp_enqueue_scripts', 'add_custom_files');
@@ -21,17 +43,15 @@ add_action('wp_enqueue_scripts', 'add_custom_files');
 
 function add_admin_styles(){
   wp_enqueue_style('my_admin_styles', get_template_directory_uri() . '/assets/css/admin.css' , array(), '0.1');
-  
   $screen = get_current_screen();
-
   if($screen->post_type === 'post' && ($screen->action === 'add' || $_GET['action'] === 'edit') ){
-     wp_enqueue_script('change_post_formats_script', get_template_directory_uri() . '/assets/js/change_post_formats.js', array('jquery'), '0.1', true);
-     $format = get_post_format($_GET['post']);
-  
-     wp_localize_script('change_post_formats_script', 'formatObject', array(
-       'format' => $format,
-     ));
- }
+      wp_enqueue_script('change_post_formats_script', get_template_directory_uri() . '/assets/js/change_post_formats.js', array('jquery'), '0.1', true);
+      $format = get_post_format($_GET['post']);
+      wp_localize_script('change_post_formats_script', 'formatObject', array(
+          'format' => $format
+      ));
+  }
+
 }
 add_action('admin_enqueue_scripts', 'add_admin_styles');
 
