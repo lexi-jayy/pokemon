@@ -52,7 +52,7 @@
 
         <?php if( have_posts() ): ?>
             <div class="col <?php echo $contentorder; ?>">
-                <div class="row">
+                <div id="postList" class="row cardList">
                     <?php while( have_posts() ): the_post() ?>
                         <?php get_template_part( 'content', get_post_format() ); ?>
                     <?php endwhile; ?>
@@ -141,7 +141,7 @@
                                   <?php the_post_thumbnail('thumbnail', ['class'=>'card-img-top img-fluid', 'alt' =>'thumbnail image for the post']); ?>
                               <?php endif; ?>
                              <h3 class="card-title"><?php the_title(); ?></h3>
-                             <a class="btn btn-warning btn-block" href="<?php the_permalink(); ?>">View Staff Memeber</a>
+                             <a class="btn btn-warning btn-block" href="<?php the_permalink(); ?>">View Staff Memebers</a>
                           </div>
                       </div>
                   </div>
