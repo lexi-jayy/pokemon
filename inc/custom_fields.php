@@ -68,8 +68,18 @@ $metaboxes = array(
                 'condition' => 'image'
             )
         )
-    )
-);
+            ),
+            'contact' => array(
+                'title' => 'Contact',
+                'post_type' => 'contact',
+                'fields' => array(
+                    'email' => array(
+                        'title' => 'Email',
+                        'type' => 'text'
+                    ),
+                )
+            )
+        );
 
 function create_custom_meta_boxes() {
     global $metaboxes;
@@ -147,7 +157,7 @@ function output_custom_meta_box($post, $metabox){
 
 function save_custom_metaboxes($postID){
     global $metaboxes;
-
+    error_reporting(E_ALL ^ E_NOTICE);
     if (! wp_verify_nonce($_POST['post_format_meta_box_nonce'], basename(__FILE__) ) ) {
         return $postID;
     }
