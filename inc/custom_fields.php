@@ -49,7 +49,7 @@ $metaboxes = array(
         )
     ),
     'post_formats_meta' => array(
-        'title' => 'Post Formats Feilds',
+        'title' => 'Post Formats Fields',
         'post_type' => 'post',
         'fields' => array(
             'video_link' => array(
@@ -66,7 +66,12 @@ $metaboxes = array(
                 'title' => 'Image URL',
                 'type' => 'text',
                 'condition' => 'image'
-            )
+            ),
+            'new_image' => array(
+                'title' => 'Upload an image',
+                'type' => 'image',
+                'condition' => 'image'
+            ),
         )
             ),
             'contact' => array(
@@ -107,13 +112,14 @@ function output_custom_meta_box($post, $metabox){
 
     if($fields){
         foreach ($fields as $fieldID => $field) {
+            error_reporting(E_ALL ^ E_NOTICE);
             if($customValues[$fieldID][0]){
                 $value = $customValues[$fieldID][0];
             }
             if(isset($field['condition'])){
-                $condition = 'class="conditionalField" data-condition="'.$field['condition'].'"';
+                $condition = 'class="formBlock conditionalField" data-condition="'.$field['condition'].'"';
             } else {
-                $condition = '';
+                $condition = 'class="formBlock"';
             }
             switch($field['type']){
                 case 'text':
@@ -127,13 +133,11 @@ function output_custom_meta_box($post, $metabox){
                     echo '<input type="number" name="'.$fieldID.'" class="inputField" value="'.$customValues[$fieldID][0].'">';
                 break;
                 case 'textarea':
-                    echo $customValues[$fieldID][0];
                     echo '<br>';
                     echo '<label for="'.$fieldID.'">'.$field['title'].'</label>';
                     echo '<textarea class="inputField" name="'.$fieldID.'" rows="'.$field['rows'].'"></textarea>';
                 break;
                 case 'select':
-                    echo $customValues[$fieldID][0];
                     echo '<br>';
                     echo '<label for="'.$fieldID.'">'.$field['title'].'</label>';
                     echo '<select name="'.$fieldID.'" class="inputField customSelect">';
@@ -143,11 +147,27 @@ function output_custom_meta_box($post, $metabox){
                         }
                     echo '</select>';
                 break;
+                case 'image':
+                if(get_post_meta($post->ID, $fieldID, true)){
+                    $imageID = get_post_meta($post->ID, $fieldID, true);
+                    $imageURL = wp_get_attachment_image_src($imageID, 'thumbnail');
+                }
+                echo '<div id="' . $fieldID .'"'.$condition.'>';
+                echo '<label for="'.$fieldID.'">'.$field['title'].'</label>';
+                echo '<input type="hidden" name="'.$fieldID.'" readonly value="'.$customValues[$fieldID][0].'" class="hiddenImageID">';
+                if(get_post_meta($post->ID, $fieldID, true)){
+                    echo '<img src="'.$imageURL[0].'">';
+                    echo '<button>Remove Image</button>';
+                }
+                echo '<button class="setCustomImage">Add Image</button>';
+                echo '</div>';
+                break;
                 default:
-                    echo $customValues[$fieldID][0];
-                    echo '<br>';
+                error_reporting(E_ALL ^ E_NOTICE);
+                    echo '<div id="' . $fieldID .'"'.$condition.' >';
                     echo '<label for="'.$fieldID.'">'.$field['title'].'</label>';
                     echo '<input type="text" name="'.$fieldID.'" class="inputField">';
+                    echo '</div>';
                 break;
             }
         }
